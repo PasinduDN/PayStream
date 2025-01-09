@@ -18,10 +18,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
+// Drawer styling
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -30,6 +31,15 @@ const openedMixin = (theme) => ({
   }),
   overflowX: 'hidden',
 });
+
+// const openedMixin = (theme) => ({
+//   width: drawerWidth,
+//   transition: theme.transitions.create('width', {
+//     easing: theme.transitions.easing.sharp,
+//     duration: theme.transitions.duration.enteringScreen,
+//   }),
+//   overflowX: 'hidden',
+// });
 
 const closedMixin = (theme) => ({
   transition: theme.transitions.create('width', {
@@ -104,7 +114,11 @@ export default function SideNav() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  // const [selectPage, setSellectPage] = React.useState();
+  const [selectPage, setSelectPage] = React.useState(location.pathname);
+  console.log("selectPage",selectPage);
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -137,7 +151,15 @@ export default function SideNav() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer 
+        variant="permanent" 
+        open={open}
+        sx={{
+          '& .MuiDrawer-paper': {
+            backgroundColor: '#123456', // Custom background color
+            color: '#FFFFFF', // Custom text/icon color (optional)
+          },
+        }}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -146,19 +168,28 @@ export default function SideNav() {
         <Divider />
         <List>
 
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>(navigate("/"))}> 
+            <ListItem 
+              disablePadding 
+              sx={{ display: 'block' }}
+              onClick={() => {
+                navigate("/"); 
+                setSellectPage("/");
+              }} 
+            > 
               <ListItemButton
                 sx={[
                   {
                     minHeight: 48,
                     px: 2.5,
+                    backgroundColor: selectPage === '/' ? "#f0f0f0" : "#123456", // Highlight background
+                    "&:hover": { backgroundColor: "#e0e0e0" },
                   },
                   open
                     ? {
-                        justifyContent: 'initial',
+                        justifyContent: "initial",
                       }
                     : {
-                        justifyContent: 'center',
+                        justifyContent: "center",
                       },
                 ]}
               >
@@ -195,19 +226,28 @@ export default function SideNav() {
               </ListItemButton>
             </ListItem>
 
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>(navigate("/Company"))}> 
+            <ListItem 
+              disablePadding 
+              sx={{ display: 'block' }} 
+              onClick={() => {
+                navigate("/Company"); 
+                setSellectPage("Company");
+              }} 
+              > 
               <ListItemButton
                 sx={[
                   {
                     minHeight: 48,
                     px: 2.5,
+                    backgroundColor: selectPage === '/Company' ? "#f0f0f0" : "#123456", // Highlight background
+                    "&:hover": { backgroundColor: "#e0e0e0" },
                   },
                   open
                     ? {
-                        justifyContent: 'initial',
+                        justifyContent: "initial",
                       }
                     : {
-                        justifyContent: 'center',
+                        justifyContent: "center",
                       },
                 ]}
               >
@@ -244,19 +284,28 @@ export default function SideNav() {
               </ListItemButton>
             </ListItem>
 
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>(navigate("/Item"))}> 
+            <ListItem 
+              disablePadding 
+              sx={{ display: 'block' }} 
+                onClick={() => {
+                  navigate("/Item"); 
+                  setSellectPage("Item");
+                }} 
+              > 
               <ListItemButton
                 sx={[
                   {
                     minHeight: 48,
                     px: 2.5,
+                    backgroundColor: selectPage === '/Item' ? "#f0f0f0" : "#123456", // Highlight background
+                    "&:hover": { backgroundColor: "#e0e0e0" },
                   },
                   open
                     ? {
-                        justifyContent: 'initial',
+                        justifyContent: "initial",
                       }
                     : {
-                        justifyContent: 'center',
+                        justifyContent: "center",
                       },
                 ]}
               >
