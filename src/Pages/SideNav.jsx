@@ -19,6 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Colors from '../assets/Styles/Colors';
+import Fonts from '../assets/Styles/Fonts';
 
 const drawerWidth = 240;
 
@@ -31,15 +33,6 @@ const openedMixin = (theme) => ({
   }),
   overflowX: 'hidden',
 });
-
-// const openedMixin = (theme) => ({
-//   width: drawerWidth,
-//   transition: theme.transitions.create('width', {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.enteringScreen,
-//   }),
-//   overflowX: 'hidden',
-// });
 
 const closedMixin = (theme) => ({
   transition: theme.transitions.create('width', {
@@ -64,26 +57,29 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
+})(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: Colors.palette.general.color01, // Change the background color
+  color: theme.palette.primary.dark, // Change the text/icon color
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
+  fontFamily: Fonts.Headers.Type1.fontFamily, // Add custom font family
+  fontSize: Fonts.Headers.Type1.fontSize.md, // Use responsive font size
+  fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+  lineHeight: Fonts.Headers.Type1.lineHeight, // Line height
+  letterSpacing: Fonts.Headers.Type1.letterSpacing, // Letter spacing
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
 }));
+
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme }) => ({
@@ -147,7 +143,7 @@ export default function SideNav() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            LOGO
           </Typography>
         </Toolbar>
       </AppBar>
@@ -156,7 +152,7 @@ export default function SideNav() {
         open={open}
         sx={{
           '& .MuiDrawer-paper': {
-            backgroundColor: '#123456', // Custom background color
+            backgroundColor: Colors.palette.general.color02, // Custom background color
             color: '#FFFFFF', // Custom text/icon color (optional)
           },
         }}>
@@ -181,8 +177,13 @@ export default function SideNav() {
                   {
                     minHeight: 48,
                     px: 2.5,
-                    backgroundColor: selectPage === '/' ? "#f0f0f0" : "#123456", // Highlight background
+                    backgroundColor: selectPage === '/' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
                     "&:hover": { backgroundColor: "#e0e0e0" },
+                    fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
+                    fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
+                    fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+                    letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
+                    color: selectPage === '/' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
                   },
                   open
                     ? {
@@ -239,8 +240,13 @@ export default function SideNav() {
                   {
                     minHeight: 48,
                     px: 2.5,
-                    backgroundColor: selectPage === '/Company' ? "#f0f0f0" : "#123456", // Highlight background
+                    backgroundColor: selectPage === '/Company' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
                     "&:hover": { backgroundColor: "#e0e0e0" },
+                    fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
+                    fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
+                    fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+                    letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
+                    color: selectPage === '/Company' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
                   },
                   open
                     ? {
@@ -297,8 +303,13 @@ export default function SideNav() {
                   {
                     minHeight: 48,
                     px: 2.5,
-                    backgroundColor: selectPage === '/Item' ? "#f0f0f0" : "#123456", // Highlight background
+                    backgroundColor: selectPage === '/Item' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
                     "&:hover": { backgroundColor: "#e0e0e0" },
+                    fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
+                    fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
+                    fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+                    letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
+                    color: selectPage === '/Item' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
                   },
                   open
                     ? {
