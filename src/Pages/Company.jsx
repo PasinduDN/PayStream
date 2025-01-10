@@ -1,85 +1,92 @@
-import SideNav from "./SideNav";
-import Box from '@mui/material/Box';
-import Colors from "../assets/Styles/Colors";
-import Fonts from "../assets/Styles/Fonts";
-import { useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { useEffect, useState } from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import {
     TextField,
     Button,
     Grid,
     Typography,
-} from '@mui/material';
+    Box
+} from "@mui/material";
+import SideNav from "./SideNav";
+import Colors from "../assets/Styles/Colors";
+import Fonts from "../assets/Styles/Fonts";
 
 export default function Company() {
-
     const [companyDetails, setCompanyDetails] = useState({
-        companyName: '',
-        companyType: '',
-        industry: '',
-        email: '',
-        companyWebsite: '',
-        contactNumber: '',
-        companyAddress: '',
-      });
+        companyName: "",
+        companyType: "",
+        industry: "",
+        email: "",
+        companyWebsite: "",
+        contactNumber: "",
+        companyAddress: ""
+    });
 
-    const initialValues = {
-        firstName: '',
-        lastName: '',
-        companyName: '',
-        email: '',
-        contactNumber: '',
-        companyType: '',
-        industry: '',
-        companyWebsite: '',
-        companyAddress: '',
-    };
+    // Fetch current data when the component mounts
+    useEffect(() => {
+        async function fetchCompanyDetails() {
+            try {
+                // Replace this with your actual API endpoint
+                const response = await fetch("/api/company-details");
+                const data = await response.json();
+                setCompanyDetails(data);
+            } catch (error) {
+                console.error("Failed to fetch company details:", error);
+            }
+        }
 
-    // const validationSchema = Yup.object().shape({
-    //     firstName: Yup.string().required('First Name is required'),
-    //     lastName: Yup.string().required('Last Name is required'),
-    //     companyName: Yup.string().required('Company Name is required'),
-    //     email: Yup.string()
-    //         .email('Invalid email format')
-    //         .required('Email is required'),
-    //     contactNumber: Yup.string()
-    //         .matches(/^[0-9]{10}$/, 'Must be a 10-digit phone number')
-    //         .required('Contact Number is required'),
-    //     companyType: Yup.string().required('Company Type is required'),
-    //     industry: Yup.string().required('Industry is required'),
-    //     companyWebsite: Yup.string().url('Invalid URL format'),
-    //     companyAddress: Yup.string().required('Company Address is required'),
-    // });
+        fetchCompanyDetails();
+    }, []);
 
-    const handleSubmit = (values) => {
-        console.log('Form Values', values);
-    };
+    async function SaveCompanyDetails(values) {
+        console.log("Company details saved successfully:", values);
+        try {
+            // Replace this with your actual API endpoint
+            const response = await fetch("/api/save-company-details", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values)
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to save company details");
+            }
+
+            console.log("Company details saved successfully:", values);
+        } catch (error) {
+            console.error("Error saving company details:", error);
+        }
+    }
 
     return (
         <>
-            <Box sx={{
-                display: 'flex',
-                // height: '100vh', // Full viewport height
-                width: '100vw', // Full viewport width
-                background: Colors.palette.general.color01,
-                color: '#ffffff', // Adjust text color for visibility
-                marginTop: '50px'
-            }}
+            <Box
+                sx={{
+                    display: "flex",
+                    height: '100%',
+                    width: "100vw",
+                    background: Colors.palette.general.color01,
+                    color: "#ffffff",
+                    marginTop: "50px"
+                }}
             >
                 <SideNav />
                 <Box
                     sx={{
-                        display: 'flex',
-                        height: '100vh', // Full viewport height
-                        width: '100vw', // Full viewport width
+                        display: "flex",
+                        height: { xs: "100%", sm: "100vh", md: "100vh" } ,
+                        width: "100vw",
                         background: Colors.palette.primary.contrastText,
-                        color: '#ffffff', // Adjust text color for visibility
-                        margin: { xs: '15px', sm: '30px', md: '50px' },
-                        borderRadius: '10px'
+                        color: "#ffffff",
+                        margin: { xs: "15px", sm: "30px", md: "50px" },
+                        borderRadius: "10px"
                     }}
                 >
                     <Formik
+                        enableReinitialize
                         initialValues={{
                             companyName: companyDetails.companyName,
                             companyType: companyDetails.companyType,
@@ -87,87 +94,48 @@ export default function Company() {
                             email: companyDetails.email,
                             companyWebsite: companyDetails.companyWebsite,
                             contactNumber: companyDetails.contactNumber,
-                            companyAddress: companyDetails.companyAddress,
+                            companyAddress: companyDetails.companyAddress
                         }}
-                        validationSchema={
-                            Yup.object().shape({
-                                // firstName: Yup.string().required('First Name is required'),
-                                // lastName: Yup.string().required('Last Name is required'),
-                                companyName: Yup.string().required('Company Name is required'),
-                                email: Yup.string()
-                                    .email('Invalid email format')
-                                    .required('Email is required'),
-                                contactNumber: Yup.string()
-                                    .matches(/^[0-9]{10}$/, 'Must be a 10-digit phone number')
-                                    .required('Contact Number is required'),
-                                companyType: Yup.string().required('Company Type is required'),
-                                industry: Yup.string().required('Industry is required'),
-                                companyWebsite: Yup.string().url('Invalid URL format'),
-                                companyAddress: Yup.string().required('Company Address is required'),
-                            })
-                        }
-                        onSubmit={handleSubmit}
+                        validationSchema={Yup.object().shape({
+                            companyName: Yup.string().required("Company Name is required"),
+                            email: Yup.string()
+                                .email("Invalid email format")
+                                .required("Email is required"),
+                            contactNumber: Yup.string()
+                                .matches(/^[0-9]{10}$/, "Must be a 10-digit phone number")
+                                .required("Contact Number is required"),
+                            companyType: Yup.string().required("Company Type is required"),
+                            industry: Yup.string().required("Industry is required"),
+                            companyWebsite: Yup.string().url("Invalid URL format"),
+                            companyAddress: Yup.string().required("Company Address is required")
+                        })}
+                        onSubmit={SaveCompanyDetails}
                     >
-                        {({ 
-                            touched, 
-                            errors, 
-                            handleChange, 
-                            handleBlur, 
-                            values 
-                        }) => (
+                        {({ values, touched, errors, handleChange, handleBlur }) => (
                             <Form>
-                                <Box sx={{ maxWidth: '100%', margin: '0 auto', p: 3 }}>
-                                    <Grid container spacing={3}>
-                                        {/* <Grid item xs={12} sm={6} md={3}>
-                                            <TextField
-                                                fullWidth
-                                                label="First Name"
-                                                name="firstName"
-                                                value={values.firstName}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={touched.firstName && Boolean(errors.firstName)}
-                                                helperText={touched.firstName && errors.firstName}
-                                            />
-                                        </Grid> */}
-
-                                        {/* <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                fullWidth
-                                                label="Last Name"
-                                                name="lastName"
-                                                value={values.lastName}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={touched.lastName && Boolean(errors.lastName)}
-                                                helperText={touched.lastName && errors.lastName}
-                                            />
-                                        </Grid> */}
-                                    </Grid>
+                                <Box sx={{ maxWidth: "100%", margin: "0 auto", p: 3 }}>
                                     <Typography
                                         variant="h5"
                                         gutterBottom
                                         sx={{
-                                            mt: 3,
-                                            fontFamily: Fonts.Headers.Type2.fontFamily, // Apply custom font
-                                            fontSize: Fonts.Headers.Type2.fontSize, // Apply responsive font size
-                                            fontWeight: Fonts.Headers.Type2.fontWeight, // Apply font weight
-                                            letterSpacing: Fonts.Headers.Type2.letterSpacing, // Apply letter spacing
-                                            color: Colors.palette.general.color04, // Font color
+                                            fontFamily: Fonts.Headers.Type2.fontFamily,
+                                            fontSize: Fonts.Headers.Type2.fontSize,
+                                            fontWeight: Fonts.Headers.Type2.fontWeight,
+                                            letterSpacing: Fonts.Headers.Type2.letterSpacing,
+                                            color: Colors.palette.general.color04,
                                         }}
                                     >
                                         Company Details
                                     </Typography>
-
                                     <Grid container spacing={3}>
                                         <Grid item xs={12} sm={6} md={4}>
                                             <TextField
                                                 fullWidth
                                                 label="Company Name"
                                                 name="companyName"
-                                                value={companyDetails.companyName}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
+                                                value={values.companyName} // Use Formik values
+                                                onChange={handleChange} // Use Formik handleChange
+                                                onBlur={handleBlur} // Use Formik handleBlur
                                                 error={touched.companyName && Boolean(errors.companyName)}
                                                 helperText={touched.companyName && errors.companyName}
                                             />
@@ -177,66 +145,61 @@ export default function Company() {
                                                 fullWidth
                                                 label="Company Type"
                                                 name="companyType"
-                                                value={companyDetails.companyType}
+                                                value={values.companyType}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.companyType && Boolean(errors.companyType)}
                                                 helperText={touched.companyType && errors.companyType}
                                             />
                                         </Grid>
-
                                         <Grid item xs={12} sm={6} md={4}>
                                             <TextField
                                                 fullWidth
                                                 label="Industry"
                                                 name="industry"
-                                                value={companyDetails.industry}
+                                                value={values.industry}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.industry && Boolean(errors.industry)}
                                                 helperText={touched.industry && errors.industry}
                                             />
                                         </Grid>
-
                                         <Grid item xs={12} sm={6} md={4}>
                                             <TextField
                                                 fullWidth
                                                 label="Email"
                                                 name="email"
-                                                value={companyDetails.email}
+                                                value={values.email}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.email && Boolean(errors.email)}
                                                 helperText={touched.email && errors.email}
                                             />
                                         </Grid>
-
                                         <Grid item xs={12} sm={6} md={4}>
                                             <TextField
                                                 fullWidth
                                                 label="Company Website (if applicable)"
                                                 name="companyWebsite"
-                                                value={companyDetails.companyWebsite}
+                                                value={values.companyWebsite}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.companyWebsite && Boolean(errors.companyWebsite)}
                                                 helperText={touched.companyWebsite && errors.companyWebsite}
                                             />
                                         </Grid>
-
                                         <Grid item xs={12} sm={6} md={4}>
                                             <TextField
                                                 fullWidth
                                                 label="Contact Number"
                                                 name="contactNumber"
-                                                value={companyDetails.contactNumber}
+                                                value={values.contactNumber}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.contactNumber && Boolean(errors.contactNumber)}
                                                 helperText={touched.contactNumber && errors.contactNumber}
                                             />
                                         </Grid>
-
                                         <Grid item xs={12} sm={6} md={4}>
                                             <TextField
                                                 fullWidth
@@ -244,7 +207,7 @@ export default function Company() {
                                                 rows={4}
                                                 label="Company Address"
                                                 name="companyAddress"
-                                                value={companyDetails.companyAddress}
+                                                value={values.companyAddress}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.companyAddress && Boolean(errors.companyAddress)}
@@ -253,12 +216,9 @@ export default function Company() {
                                         </Grid>
                                     </Grid>
                                     <Grid container spacing={3}>
-                                        <Grid item xs={12} sm={6} md={3}>
-                                        </Grid>
-                                        <Grid item xs={12} sm={6} md={3}>
-                                        </Grid>
-                                        <Grid item xs={12} sm={6} md={3}>
-                                        </Grid>
+                                        <Grid item xs={12} sm={6} md={3} />
+                                        <Grid item xs={12} sm={6} md={3} />
+                                        <Grid item xs={12} sm={6} md={3} />
                                         <Grid item xs={12} sm={6} md={3}>
                                             <Button
                                                 type="submit"
@@ -274,10 +234,10 @@ export default function Company() {
                                 </Box>
                             </Form>
                         )}
+
                     </Formik>
                 </Box>
             </Box>
-
         </>
     );
 }
