@@ -21,6 +21,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Colors from '../assets/Styles/Colors';
 import Fonts from '../assets/Styles/Fonts';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const drawerWidth = 240;
 
@@ -114,13 +115,19 @@ export default function SideNav() {
   // const [selectPage, setSellectPage] = React.useState();
   const [selectPage, setSelectPage] = React.useState(location.pathname);
   // console.log("selectPage",selectPage);
-  
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    // Clear session data, localStorage, or cookies
+    localStorage.removeItem("userSession"); // Example for removing session data
+    navigate("/"); // Redirect to the login page
   };
 
   return (
@@ -145,10 +152,20 @@ export default function SideNav() {
           <Typography variant="h6" noWrap component="div">
             LOGO
           </Typography>
+
+          {/* Logout Button */}
+          <IconButton
+            color="inherit"
+            onClick={handleLogout} // Trigger the logout function
+            sx={{ ml: 'auto' }} // Push to the right
+          >
+            <ExitToAppIcon />
+          </IconButton>
+
         </Toolbar>
       </AppBar>
-      <Drawer 
-        variant="permanent" 
+      <Drawer
+        variant="permanent"
         open={open}
         sx={{
           '& .MuiDrawer-paper': {
@@ -164,194 +181,193 @@ export default function SideNav() {
         <Divider />
         <List>
 
-            <ListItem 
-              disablePadding 
-              sx={{ display: 'block' }}
-              onClick={() => {
-                navigate("/"); 
-                setSellectPage("/");
-              }} 
-            > 
-              <ListItemButton
+          <ListItem
+            disablePadding
+            sx={{ display: 'block' }}
+            onClick={() => {
+              navigate("/dashboard");
+            }}
+          >
+            <ListItemButton
+              sx={[
+                {
+                  minHeight: 48,
+                  px: 2.5,
+                  backgroundColor: selectPage === '/dashboard' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
+                  "&:hover": { backgroundColor: "#e0e0e0" },
+                  fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
+                  fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
+                  fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+                  letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
+                  color: selectPage === '/' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
+                },
+                open
+                  ? {
+                    justifyContent: "initial",
+                  }
+                  : {
+                    justifyContent: "center",
+                  },
+              ]}
+            >
+              <ListItemIcon
                 sx={[
                   {
-                    minHeight: 48,
-                    px: 2.5,
-                    backgroundColor: selectPage === '/' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
-                    "&:hover": { backgroundColor: "#e0e0e0" },
-                    fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
-                    fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
-                    fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
-                    letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
-                    color: selectPage === '/' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
+                    minWidth: 0,
+                    justifyContent: 'center',
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      mr: 3,
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      mr: 'auto',
+                    },
                 ]}
               >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
+                <InboxIcon />
+              </ListItemIcon>
+
+              <ListItemText
+                primary="DashBoard"
+                sx={[
+                  open
+                    ? {
+                      opacity: 1,
+                    }
+                    : {
+                      opacity: 0,
                     },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: 'auto',
-                        },
-                  ]}
-                >
-                    <InboxIcon />
-                </ListItemIcon>
+                ]}
+              />
+            </ListItemButton>
+          </ListItem>
 
-                <ListItemText
-                  primary="DashBoard"
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem 
-              disablePadding 
-              sx={{ display: 'block' }} 
-              onClick={() => {
-                navigate("/Company"); 
-                setSellectPage("Company");
-              }} 
-              > 
-              <ListItemButton
+          <ListItem
+            disablePadding
+            sx={{ display: 'block' }}
+            onClick={() => {
+              navigate("/Company");
+              setSellectPage("Company");
+            }}
+          >
+            <ListItemButton
+              sx={[
+                {
+                  minHeight: 48,
+                  px: 2.5,
+                  backgroundColor: selectPage === '/Company' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
+                  "&:hover": { backgroundColor: "#e0e0e0" },
+                  fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
+                  fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
+                  fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+                  letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
+                  color: selectPage === '/Company' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
+                },
+                open
+                  ? {
+                    justifyContent: "initial",
+                  }
+                  : {
+                    justifyContent: "center",
+                  },
+              ]}
+            >
+              <ListItemIcon
                 sx={[
                   {
-                    minHeight: 48,
-                    px: 2.5,
-                    backgroundColor: selectPage === '/Company' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
-                    "&:hover": { backgroundColor: "#e0e0e0" },
-                    fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
-                    fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
-                    fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
-                    letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
-                    color: selectPage === '/Company' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
+                    minWidth: 0,
+                    justifyContent: 'center',
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      mr: 3,
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      mr: 'auto',
+                    },
                 ]}
               >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
+                <InboxIcon />
+              </ListItemIcon>
+
+              <ListItemText
+                primary="Company"
+                sx={[
+                  open
+                    ? {
+                      opacity: 1,
+                    }
+                    : {
+                      opacity: 0,
                     },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: 'auto',
-                        },
-                  ]}
-                >
-                    <InboxIcon />
-                </ListItemIcon>
+                ]}
+              />
+            </ListItemButton>
+          </ListItem>
 
-                <ListItemText
-                  primary="Company"
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem 
-              disablePadding 
-              sx={{ display: 'block' }} 
-                onClick={() => {
-                  navigate("/Item"); 
-                  setSellectPage("Item");
-                }} 
-              > 
-              <ListItemButton
+          <ListItem
+            disablePadding
+            sx={{ display: 'block' }}
+            onClick={() => {
+              navigate("/Item");
+              setSellectPage("Item");
+            }}
+          >
+            <ListItemButton
+              sx={[
+                {
+                  minHeight: 48,
+                  px: 2.5,
+                  backgroundColor: selectPage === '/Item' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
+                  "&:hover": { backgroundColor: "#e0e0e0" },
+                  fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
+                  fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
+                  fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
+                  letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
+                  color: selectPage === '/Item' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
+                },
+                open
+                  ? {
+                    justifyContent: "initial",
+                  }
+                  : {
+                    justifyContent: "center",
+                  },
+              ]}
+            >
+              <ListItemIcon
                 sx={[
                   {
-                    minHeight: 48,
-                    px: 2.5,
-                    backgroundColor: selectPage === '/Item' ? Colors.palette.general.color03 : Colors.palette.general.color02, // Highlight background
-                    "&:hover": { backgroundColor: "#e0e0e0" },
-                    fontFamily: Fonts.Headers.Type1.fontFamily, // Apply custom font
-                    fontSize: Fonts.Headers.Type1.fontSize.md, // Apply responsive font size
-                    fontWeight: Fonts.Headers.Type1.fontWeight, // Apply font weight
-                    letterSpacing: Fonts.Headers.Type1.letterSpacing, // Apply letter spacing
-                    color: selectPage === '/Item' ? Colors.palette.primary.contrastText : Fonts.Headers.Type1.color, // Font color
+                    minWidth: 0,
+                    justifyContent: 'center',
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      mr: 3,
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      mr: 'auto',
+                    },
                 ]}
               >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: 'auto',
-                        },
-                  ]}
-                >
-                    <InboxIcon />
-                </ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
 
-                <ListItemText
-                  primary="Item"
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
+              <ListItemText
+                primary="Item"
+                sx={[
+                  open
+                    ? {
+                      opacity: 1,
+                    }
+                    : {
+                      opacity: 0,
+                    },
+                ]}
+              />
+            </ListItemButton>
+          </ListItem>
 
         </List>
         <Divider />
