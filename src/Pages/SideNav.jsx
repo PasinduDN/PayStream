@@ -113,7 +113,7 @@ export default function SideNav() {
   const location = useLocation();
   // const [selectPage, setSellectPage] = React.useState();
   const [selectPage, setSelectPage] = React.useState(location.pathname);
-  console.log("selectPage",selectPage);
+  // console.log("selectPage",selectPage);
   
   const handleDrawerOpen = () => {
     setOpen(true);
