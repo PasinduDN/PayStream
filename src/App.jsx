@@ -6,6 +6,7 @@ import DashBoard from './Pages/DashBoard.jsx'
 import Item from './Pages/Item.jsx'
 import Login from './Pages/Login.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
+import { db } from './Firebase.js'
 
 function App() {
 
